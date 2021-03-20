@@ -1,9 +1,9 @@
-export { };
+export {};
 
-const interval = 2000
+const interval = 2000;
 
-const highlight = () => {
-    console.log("highlight divs ... !")
-}
+const highlight = (): void => {
+  console.log('highlight divs ... !');
+};
 
-setInterval(highlight, interval)
+setInterval(highlight, interval);
