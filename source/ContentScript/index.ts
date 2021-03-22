@@ -6,14 +6,16 @@ const userNames = [
   'white-jang',
   'dion',
   'yoons0717',
+  'haejoo',
+  'gil0127'
 ];
 
-function addTag(userInfos) {
-  for (let index = 0; index < userInfos.length; index++) {
-    const userName = userInfos[index].children[1].textContent
+function addTag(infos): void {
+  for (let index = 0; index < infos.length; index += 1) {
+    const userName = infos[index].children[1].textContent
       .replace('by', '')
       .trim();
-    const span = userInfos[index].children[1];
+    const span = infos[index].children[1];
     if (userNames.includes(userName) && span.className === '') {
       span.className = 'following';
       span.style.cssText =
@@ -22,7 +24,7 @@ function addTag(userInfos) {
   }
 }
 
-const repeatFn = setInterval(function () {
+setInterval(function callBack() {
   addTag(userInfos);
 }, 2000);
 
