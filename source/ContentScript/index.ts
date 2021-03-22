@@ -7,7 +7,7 @@ const userNames = [
   'dion',
   'yoons0717',
   'haejoo',
-  'gil0127'
+  'gil0127',
 ];
 
 function addTag(infos): void {
