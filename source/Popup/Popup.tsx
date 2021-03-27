@@ -1,94 +1,108 @@
-import React, {useState} from 'react';
+import React from 'react';
+import { BrowserStorage } from '../libs/storage'
 import './styles.scss';
 
-const addUser = (e): void => {
+const addUser = (e: any): void => {
   e.preventDefault();
 };
 
-const Tab: React.FC = () => {
-  const [state, setState] = useState(0);
-  return (
-    <div className="wrapper">
-      <div className="tab">
-        <button
-          type="button"
-          onClick={(): void => setState(0)}
-          style={
-            state === 0
-              ? {
-                  borderBottom: '2px solid rgb(12, 166, 120)',
-                  color: 'rgb(12, 166, 120)',
-                  fontWeight: '700',
-                }
-              : {borderBottom: 'none'}
-          }
-        >
-          팔로잉 추가
-        </button>
-        <button
-          type="button"
-          onClick={(): void => setState(1)}
-          style={
-            state === 1
-              ? {
-                  borderBottom: '2px solid rgb(12, 166, 120)',
-                  color: 'rgb(12, 166, 120)',
-                  fontWeight: '700',
-                }
-              : {borderBottom: 'none'}
-          }
-        >
-          팔로잉 삭제
-        </button>
-      </div>
-      <div className="content">
-        <form
-          className="add-user"
-          style={state === 0 ? {display: 'block'} : {display: 'none'}}
-        >
-          <input
-            type="text"
-            placeholder="팔로잉할 사용자를 추가해주세요"
-            className="add-user__input"
-          />
-          <button className="add-user__button" type="submit" onClick={addUser}>
-            사용자 추가
+type TabProps = {}
+
+type TabState = {
+  index: number;
+}
+
+class Tab extends React.Component<TabProps, TabState> {
+  storage: BrowserStorage;
+
+  constructor(props: any) {
+    super(props)
+    this.state = { index: 0 };
+  }
+
+  async componentDidMount() {
+    this.storage = await BrowserStorage.getStorage();
+  }
+
+  render() {
+    const { index } = this.state
+    const active = {
+      borderBottom: '2px solid rgb(12, 166, 120)',
+      color: 'rgb(12, 166, 120)',
+      fontWeight: '700',
+    }
+    const deactive = {
+      borderBottom: 'none'
+    }
+
+    return (
+      <div className="wrapper">
+        <div className="tab">
+          <button
+            type="button"
+            onClick={() => this.state = { index: 0 }}
+            style={index === 0 ? active : deactive}
+          >
+            팔로잉 추가
           </button>
-        </form>
-        <div
-          className="delete-user"
-          style={state === 1 ? {display: 'block'} : {display: 'none'}}
-        >
-          <ul>
-            <li>
-              mowinckel
-              <button type="button">삭제</button>
-            </li>
-            <li>
-              openhub
-              <button type="button">삭제</button>
-            </li>
-            <li>
-              juunini
-              <button type="button">삭제</button>
-            </li>
-            <li>
-              white-jang
-              <button type="button">삭제</button>
-            </li>
-            <li>
-              white-jang
-              <button type="button">삭제</button>
-            </li>
-            <li>
-              white-jang
-              <button type="button">삭제</button>
-            </li>
-          </ul>
+          <button
+            type="button"
+            onClick={() => this.state = { index: 1 }}
+            style={index === 1 ? active : deactive}
+          >
+            팔로잉 삭제
+          </button>
+        </div>
+        <div className="content">
+          <form
+            className="add-user"
+            style={index === 0 ? { display: 'block' } : { display: 'none' }}
+          >
+            <input
+              type="text"
+              placeholder="팔로잉할 사용자를 추가해주세요"
+              className="add-user__input"
+            />
+            <button className="add-user__button" type="submit" onClick={addUser}>
+              사용자 추가
+            </button>
+          </form>
+          <div
+            className="delete-user"
+            style={index === 1 ? { display: 'block' } : { display: 'none' }}
+          >
+            <ul>
+              <li>
+                mowinckel
+                <button type="button">삭제</button>
+              </li>
+              <li>
+                openhub
+                <button type="button">삭제</button>
+              </li>
+              <li>
+                juunini
+                <button type="button">삭제</button>
+              </li>
+              <li>
+                white-jang
+                <button type="button">삭제</button>
+              </li>
+              <li>
+                white-jang
+                <button type="button">삭제</button>
+              </li>
+              <li>
+                white-jang
+                <button type="button">삭제</button>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+
+  }
 };
 
 const CountUsers: React.FC = () => {
