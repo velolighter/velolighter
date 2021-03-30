@@ -21,7 +21,9 @@
 		"node/no-unpublished-import": "off",
 		"node/no-unsupported-features/es-syntax": ["error", {
 			"ignores": ["modules"]
-		}]
+		}],
+		"react/no-set-state": "off",
+		"react/destructuring-assignment": "off"
 	},
 	"env": {
 		"webextensions": true
