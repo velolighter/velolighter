@@ -1,9 +1,9 @@
 import React from 'react';
-import { BrowserStorage } from '../libs/storage';
+import {BrowserStorage} from '../libs/storage';
 import './styles.scss';
 
 interface TabProps {
-  storage: BrowserStorage
+  storage: BrowserStorage;
 }
 
 interface TabState {
@@ -29,7 +29,7 @@ class Tab extends React.Component<TabProps, TabState> {
   }
 
   handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
-    const { id, userName } = this.state;
+    const {id, userName} = this.state;
     e.preventDefault();
     if (userName === '') {
       return;
@@ -54,8 +54,8 @@ class Tab extends React.Component<TabProps, TabState> {
     React.HTMLAttributes<HTMLDivElement>,
     HTMLDivElement
   > {
-    const { isToggleOn, userName } = this.state;
-    const followers = this.props.storage.list()
+    const {isToggleOn, userName} = this.state;
+    const followers = this.props.storage.list();
     const active = {
       borderBottom: '2px solid rgb(12, 166, 120)',
       color: 'rgb(12, 166, 120)',
