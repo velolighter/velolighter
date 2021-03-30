@@ -1,11 +1,16 @@
 import {browser} from 'webextension-polyfill-ts';
 
+interface Follower {
+  id: number;
+  userName: string;
+}
+
 export class BrowserStorage {
   private static instance: BrowserStorage;
 
-  private followers: string[];
+  public followers: Follower[];
 
-  constructor(followers: string[]) {
+  constructor(followers: Follower[]) {
     this.followers = followers;
   }
 
@@ -32,7 +37,7 @@ export class BrowserStorage {
    * list returns followers.
    * @returns followers
    */
-  list(): string[] {
+  list(): Follower[] {
     return this.followers;
   }
 
@@ -41,8 +46,8 @@ export class BrowserStorage {
    * sync followers with Chrome.
    * @param name The follower name to store.
    */
-  add(name: string): void {
-    this.followers.push(name);
+  add(follower: Follower): void {
+    this.followers.push(follower);
     browser.storage.sync.set({followers: this.followers});
   }
 
@@ -52,8 +57,8 @@ export class BrowserStorage {
    * @param name
    */
   remove(name: string): void {
-    this.followers = this.followers.filter((candidate: string) => {
-      return candidate !== name;
+    this.followers = this.followers.filter((candidate: Follower) => {
+      return candidate.userName !== name;
     });
     browser.storage.sync.set({followers: this.followers});
   }
