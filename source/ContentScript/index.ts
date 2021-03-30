@@ -10,7 +10,7 @@ const userNames = [
   'gil0127',
 ];
 
-function addTag(infos): void {
+function addTag(infos: any): void {
   for (let index = 0; index < infos.length; index += 1) {
     const userName = infos[index].children[1].textContent
       .replace('by', '')
