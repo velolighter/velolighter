@@ -2,16 +2,18 @@ import React from 'react';
 import {BrowserStorage} from '../libs/storage';
 import './styles.scss';
 
+interface TabProps {
+  storage: BrowserStorage;
+}
+
 interface TabState {
   isToggleOn: boolean;
   id: number;
   userName: string;
 }
 
-class Tab extends React.Component<unknown, TabState> {
-  storage: BrowserStorage;
-
-  constructor(props: TabState) {
+class Tab extends React.Component<TabProps, TabState> {
+  constructor(props: TabProps) {
     super(props);
     this.state = {
       isToggleOn: true,
@@ -26,13 +28,13 @@ class Tab extends React.Component<unknown, TabState> {
     }));
   }
 
-  handleSubmit(e: React.ChangeEvent<HTMLInputElement>): void {
+  handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
     const {id, userName} = this.state;
     e.preventDefault();
     if (userName === '') {
       return;
     }
-    this.storage.add({
+    this.props.storage.add({
       id,
       userName,
     });
@@ -40,7 +42,6 @@ class Tab extends React.Component<unknown, TabState> {
       id: state.id + 1,
       userName: '',
     }));
-    console.log(this.storage.list());
   }
 
   handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
@@ -49,16 +50,12 @@ class Tab extends React.Component<unknown, TabState> {
     });
   }
 
-  async componentDidMount(): Promise<void> {
-    this.storage = await BrowserStorage.getStorage();
-  }
-
   render(): React.DetailedHTMLProps<
     React.HTMLAttributes<HTMLDivElement>,
     HTMLDivElement
   > {
     const {isToggleOn, userName} = this.state;
-    const {followers} = this.storage;
+    const followers = this.props.storage.list();
     const active = {
       borderBottom: '2px solid rgb(12, 166, 120)',
       color: 'rgb(12, 166, 120)',
@@ -117,6 +114,7 @@ class Tab extends React.Component<unknown, TabState> {
               {followers?.map((follower) => (
                 <li key={follower.id}>
                   {follower.userName}
+                  {/* TODO: 삭제 기능 추가 */}
                   <button type="button">삭제</button>
                 </li>
               ))}
@@ -131,10 +129,10 @@ class Tab extends React.Component<unknown, TabState> {
   }
 }
 
-const Popup: React.FC = () => {
+const Popup: React.FC<{storage: BrowserStorage}> = (props) => {
   return (
     <div className="pop-up">
-      <Tab />
+      <Tab storage={props.storage} />
     </div>
   );
 };
