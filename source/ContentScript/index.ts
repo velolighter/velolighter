@@ -1,31 +1,29 @@
-const userInfos = document.getElementsByClassName('userinfo');
-const userNames = [
-  'mowinckel',
-  'openhub',
-  'juunini',
-  'white-jang',
-  'dion',
-  'yoons0717',
-  'haejoo',
-  'gil0127',
-];
+import {BrowserStorage} from '../libs/storage';
 
-function addTag(infos: any): void {
-  for (let index = 0; index < infos.length; index += 1) {
-    const userName = infos[index].children[1].textContent
-      .replace('by', '')
-      .trim();
-    const span = infos[index].children[1];
-    if (userNames.includes(userName) && span.className === '') {
-      span.className = 'following';
-      span.style.cssText =
-        'background-position-y: -0%; background-image: linear-gradient( white 50%, gold 50%); background-size: auto 175%;';
+const userInfos = document.getElementsByClassName('userinfo');
+
+BrowserStorage.getStorage().then((storage) => {
+  const {followers} = storage;
+  console.log(followers);
+  function addTag(infos): void {
+    for (let index = 0; index < infos.length; index += 1) {
+      const userName = infos[index].children[1].textContent
+        .replace('by', '')
+        .trim();
+      const span = infos[index].children[1];
+      for (const follower of followers) {
+        if (follower.userName === userName && span.className === '') {
+          span.className = 'following';
+          span.style.cssText =
+            'background: linear-gradient(transparent 80%, rgb(64, 240, 175, 0.8) 80%);';
+        }
+      }
     }
   }
-}
 
-setInterval(function callBack() {
-  addTag(userInfos);
-}, 2000);
+  setInterval(function callBack() {
+    addTag(userInfos);
+  }, 2000);
+});
 
 export {};
