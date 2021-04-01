@@ -1,24 +1,26 @@
 import React from 'react';
-import {BrowserStorage} from '../libs/storage';
+import {BrowserStorage, Follower} from '../libs/storage';
 import './styles.scss';
 
-interface TabProps {
+interface ContentProps {
   storage: BrowserStorage;
 }
 
-interface TabState {
+interface ContentState {
   isToggleOn: boolean;
   id: number;
   userName: string;
+  followers: Follower[];
 }
 
-class Tab extends React.Component<TabProps, TabState> {
-  constructor(props: TabProps) {
+class Content extends React.Component<ContentProps, ContentState> {
+  constructor(props: ContentProps) {
     super(props);
     this.state = {
       isToggleOn: true,
-      id: 0,
+      id: this.props.storage.getId(),
       userName: '',
+      followers: this.props.storage.list(),
     };
   }
 
@@ -29,19 +31,29 @@ class Tab extends React.Component<TabProps, TabState> {
   }
 
   handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
-    const {id, userName} = this.state;
+    const {id, userName, followers} = this.state;
     e.preventDefault();
     if (userName === '') {
       return;
+    }
+    for (const follower of followers) {
+      if (follower.userName === userName) {
+        this.setState({
+          userName: '',
+        });
+        return;
+      }
     }
     this.props.storage.add({
       id,
       userName,
     });
-    this.setState((state) => ({
-      id: state.id + 1,
+    this.props.storage.plusId();
+    this.setState({
+      id: this.props.storage.getId(),
       userName: '',
-    }));
+      followers: this.props.storage.list(),
+    });
   }
 
   handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
@@ -50,12 +62,20 @@ class Tab extends React.Component<TabProps, TabState> {
     });
   }
 
+  handleRemove(name: string): void {
+    this.props.storage.remove(name);
+    this.setState((state) => ({
+      followers: state.followers.filter((candidate) => {
+        return candidate.userName !== name;
+      }),
+    }));
+  }
+
   render(): React.DetailedHTMLProps<
     React.HTMLAttributes<HTMLDivElement>,
     HTMLDivElement
   > {
-    const {isToggleOn, userName} = this.state;
-    const followers = this.props.storage.list();
+    const {isToggleOn, userName, followers} = this.state;
     const active = {
       borderBottom: '2px solid rgb(12, 166, 120)',
       color: 'rgb(12, 166, 120)',
@@ -79,14 +99,14 @@ class Tab extends React.Component<TabProps, TabState> {
             onClick={(): void => this.handleClick()}
             style={isToggleOn === true ? active : deactive}
           >
-            팔로잉 추가
+            팔로워 추가
           </button>
           <button
             type="button"
             onClick={(): void => this.handleClick()}
             style={isToggleOn === false ? active : deactive}
           >
-            팔로잉 삭제
+            팔로워 삭제
           </button>
         </div>
         <div className="content">
@@ -110,14 +130,30 @@ class Tab extends React.Component<TabProps, TabState> {
             className="delete-user"
             style={isToggleOn === false ? appear : disappear}
           >
-            <ul>
-              {followers?.map((follower) => (
-                <li key={follower.id}>
-                  {follower.userName}
-                  {/* TODO: 삭제 기능 추가 */}
-                  <button type="button">삭제</button>
+            <ul
+              style={
+                followers.length === 0
+                  ? {overflowY: 'visible'}
+                  : {overflowY: 'scroll'}
+              }
+            >
+              {followers.length === 0 ? (
+                <li className="delete-user__no-user">
+                  <span>🥺</span>추가한 사용자가 없습니다.
                 </li>
-              ))}
+              ) : (
+                followers.map((follower) => (
+                  <li key={follower.id.toString()}>
+                    {follower.userName}
+                    <button
+                      type="button"
+                      onClick={(): void => this.handleRemove(follower.userName)}
+                    >
+                      삭제
+                    </button>
+                  </li>
+                ))
+              )}
             </ul>
           </div>
         </div>
@@ -132,7 +168,7 @@ class Tab extends React.Component<TabProps, TabState> {
 const Popup: React.FC<{storage: BrowserStorage}> = (props) => {
   return (
     <div className="pop-up">
-      <Tab storage={props.storage} />
+      <Content storage={props.storage} />
     </div>
   );
 };
