@@ -1,6 +1,6 @@
 import {browser} from 'webextension-polyfill-ts';
 
-interface Follower {
+export interface Follower {
   id: number;
   userName: string;
 }
@@ -10,8 +10,11 @@ export class BrowserStorage {
 
   public followers: Follower[];
 
-  constructor(followers: Follower[]) {
+  private id: number;
+
+  constructor(followers: Follower[], id: number) {
     this.followers = followers;
+    this.id = id;
   }
 
   /**
@@ -29,7 +32,12 @@ export class BrowserStorage {
       followers = [];
     }
 
-    BrowserStorage.instance = new BrowserStorage(followers);
+    let {id} = await browser.storage.sync.get('id');
+    if (id === undefined) {
+      id = 0;
+    }
+
+    BrowserStorage.instance = new BrowserStorage(followers, id);
     return BrowserStorage.instance;
   }
 
@@ -44,7 +52,7 @@ export class BrowserStorage {
   /**
    * add a new follower, and
    * sync followers with Chrome.
-   * @param name The follower name to store.
+   * @param follower The follower name to store.
    */
   add(follower: Follower): void {
     this.followers.push(follower);
@@ -61,5 +69,22 @@ export class BrowserStorage {
       return candidate.userName !== name;
     });
     browser.storage.sync.set({followers: this.followers});
+  }
+
+  /**
+   * number returns id.
+   * @returns followers
+   */
+  getId(): number {
+    return this.id;
+  }
+
+  /**
+   * plus id, and
+   * sync id with Chrome.
+   */
+  plusId(): void {
+    this.id += 1;
+    browser.storage.sync.set({id: this.id});
   }
 }
