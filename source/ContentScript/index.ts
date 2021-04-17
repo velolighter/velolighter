@@ -2,10 +2,12 @@ import {BrowserStorage} from '../libs/storage';
 
 const userInfo = document.getElementsByClassName('userinfo');
 
-setInterval(function callBack() {
+setInterval(function() {
   BrowserStorage.getStorage().then((storage) => {
+    storage.sync();
+
     const followers = storage.list();
-    console.log(followers);
+
     /* eslint-disable @typescript-eslint/no-explicit-any */
     function addTag(infos: any): void {
       for (let index = 0; index < infos.length; index += 1) {
