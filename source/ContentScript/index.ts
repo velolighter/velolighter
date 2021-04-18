@@ -7,13 +7,13 @@ setInterval(function callBack() {
     storage.sync();
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
-    function highLightBorder(infosHighlight: any): void {
-      for (let index = 0; index < infosHighlight.length; index += 1) {
-        const userName = infosHighlight[index].children[1].textContent
+    function highLightBorder(infosToHighLight: any): void {
+      for (let index = 0; index < infosToHighLight.length; index += 1) {
+        const userName = infosToHighLight[index].children[1].textContent
           .replace('by', '')
           .trim();
-        const styledDiv = infosHighlight[index].parentElement.parentElement;
-        const span = infosHighlight[index].children[1];
+        const styledDiv = infosToHighLight[index].parentElement.parentElement;
+        const span = infosToHighLight[index].children[1];
         const followers = storage.list();
 
         for (const follower of followers) {
@@ -37,15 +37,15 @@ setInterval(function callBack() {
     }
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
-    function deleteBorder(infosDelete: any): void {
+    function deleteBorder(infosToDelete: any): void {
       const userNamesArray = getUserNames();
 
-      for (let index = 0; index < infosDelete.length; index += 1) {
-        const userName = infosDelete[index].children[1].textContent
+      for (let index = 0; index < infosToDelete.length; index += 1) {
+        const userName = infosToDelete[index].children[1].textContent
           .replace('by', '')
           .trim();
-        const styledDiv = infosDelete[index].parentElement.parentElement;
-        const span = infosDelete[index].children[1];
+        const styledDiv = infosToDelete[index].parentElement.parentElement;
+        const span = infosToDelete[index].children[1];
 
         if (
           !userNamesArray.includes(userName) &&
