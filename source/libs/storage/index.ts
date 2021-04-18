@@ -50,6 +50,17 @@ export class BrowserStorage {
   }
 
   /**
+   * sync followers property with storage.
+   */
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  sync(): void {
+    browser.storage.sync.get('followers').then((data: any) => {
+      const {followers} = data;
+      this.followers = followers;
+    });
+  }
+
+  /**
    * add a new follower, and
    * sync followers with Chrome.
    * @param follower The follower name to store.
