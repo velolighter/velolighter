@@ -47,7 +47,7 @@ setInterval(function callBack() {
           .trim();
         const styledDiv = userNamesToDelete[index].parentElement.parentElement;
         const span = userNamesToDelete[index].children[1];
-
+        
         if (
           !userNamesArray.includes(userName) &&
           span.className === 'following'
