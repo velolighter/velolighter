@@ -12,8 +12,9 @@ setInterval(function callBack() {
         const userName = userNamesToHighlight[index].children[1].textContent
           .replace('by', '')
           .trim();
-        const styledDiv = userNamesToHighLight[index].parentElement.parentElement;
-        const span = userNamesToHighLight[index].children[1];
+        const styledDiv =
+          userNamesToHighlight[index].parentElement.parentElement;
+        const span = userNamesToHighlight[index].children[1];
         const followers = storage.list();
 
         for (const follower of followers) {
@@ -46,7 +47,7 @@ setInterval(function callBack() {
           .trim();
         const styledDiv = userNamesToDelete[index].parentElement.parentElement;
         const span = userNamesToDelete[index].children[1];
-        
+
         if (
           !userNamesArray.includes(userName) &&
           span.className === 'following'
