@@ -77,7 +77,7 @@ class Content extends React.Component<ContentProps, ContentState> {
   > {
     const {isToggleOn, userName, followers} = this.state;
     const active = {
-      borderBottom: '2px solid rgb(12, 166, 120)',
+      borderBottom: '2px solid rgb(18, 184, 134)',
       color: 'rgb(12, 166, 120)',
       fontWeight: '700',
     };
