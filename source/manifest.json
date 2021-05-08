@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
-  "name": "Sample WebExtension",
-  "version": "0.0.0",
+  "name": "Veloighter",
+  "version": "0.1.0",
 
   "icons": {
     "16": "assets/icons/favicon-16.png",
@@ -9,15 +9,14 @@
     "48": "assets/icons/favicon-48.png",
     "128": "assets/icons/favicon-128.png"
   },
-  "description": "Sample description",
-  "homepage_url": "https://github.com/velolighter/web-extension-starter",
-  "short_name": "Sample Name",
+  "description": "팔로우 하고싶은 사용자를 등록하면 메인 화면에서 팔로우한 사용자의 글을 표시해줍니다.",
+  "homepage_url": "https://github.com/velolighter/velolighter",
+  "short_name": "Velolighter",
 
   "permissions": [
-    "activeTab",
     "storage",
-    "http://*/*",
-    "https://*/*"
+    "http://velog.io/",
+    "https://velog.io/"
   ],
 
   "content_security_policy": "script-src 'self'; object-src 'self'",
@@ -65,8 +64,8 @@
 
   "content_scripts": [{
     "matches": [
-      "http://*/*",
-      "https://*/*"
+      "http://velog.io/",
+      "https://velog.io/"
     ],
     "js": [
       "js/contentScript.bundle.js"
